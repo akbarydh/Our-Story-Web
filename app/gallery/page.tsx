@@ -12,10 +12,17 @@ export default function GalleryPage() {
   async function fetchImages() {
     try {
       setLoading(true);
-      const { data } = await supabase.storage.from("gallery").list("", { sortBy: { column: "created_at", order: "desc" } });
+      // Mengambil data dari bucket 'gallery' di Supabase
+      const { data } = await supabase.storage.from("gallery").list("", { 
+        sortBy: { column: "created_at", order: "desc" } 
+      });
+      
       if (data) {
         const urls = data.filter(f => f.name !== ".emptyFolderPlaceholder").map(f => ({
-          id: f.id, url: supabase.storage.from("gallery").getPublicUrl(f.name).data.publicUrl, name: f.name
+          id: f.id,
+          // Mendapatkan URL publik untuk menampilkan gambar
+          url: supabase.storage.from("gallery").getPublicUrl(f.name).data.publicUrl,
+          name: f.name
         }));
         setImages(urls);
       }
@@ -23,49 +30,58 @@ export default function GalleryPage() {
   }
 
   return (
-    <div style={{ 
-      padding: "60px 20px", 
-      background: "linear-gradient(135deg, #fff5f7 0%, #f0f4ff 100%)", 
-      minHeight: "100vh",
-      fontFamily: "'Inter', sans-serif"
-    }}>
-      <header style={{ textAlign: "center", marginBottom: "50px" }}>
-        <h1 style={{ color: "#4a4a4a", fontSize: "2.5rem", fontWeight: "800", letterSpacing: "-1px" }}>
-          Album Cinta Kita <span style={{ color: "#ff4d6d" }}>❤️</span>
-        </h1>
-        <p style={{ color: "#888" }}>Tiap foto punya cerita, tiap momen punya rasa.</p>
-      </header>
-      
-      <UploadButton onSuccess={fetchImages} />
+    // Background utama dihilangkan agar foto dari layout.tsx terlihat
+    <div className="min-h-screen px-4 py-10">
+      <div className="max-w-6xl mx-auto">
+        <header className="text-center mb-12">
+          {/* Judul menggunakan glow pink agar senada dengan homepage */}
+          <h1 className="text-4xl md:text-6xl font-bold text-pink-200 drop-shadow-[0_0_10px_rgba(244,143,177,0.5)] mb-4">
+            Album Kita ❤️
+          </h1>
+          <p className="text-white/80 italic text-lg font-light">
+            "Setiap foto punya cerita, setiap cerita punya makna."
+          </p>
+        </header>
 
-      {loading ? (
-        <div style={{ textAlign: "center", color: "#ff4d6d", fontWeight: "bold" }}>Membuka album kenangan...</div>
-      ) : (
-        <div style={{ 
-          display: "grid", 
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", 
-          gap: "25px",
-          maxWidth: "1200px",
-          margin: "0 auto"
-        }}>
-          {images.map((img) => (
-            <div key={img.id} style={{ 
-              backgroundColor: "white",
-              padding: "12px",
-              borderRadius: "20px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
-              transition: "transform 0.3s ease",
-            }}
-            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
-            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-            >
-              <img src={img.url} alt="Kenangan" style={{ 
-                width: "100%", height: "300px", objectFit: "cover", borderRadius: "12px" 
-              }} />
-            </div>
-          ))}
-        </div>
-      )}
+        {/* Komponen upload yang sudah kita pisah */}
+        <UploadButton onSuccess={fetchImages} />
+
+        {loading ? (
+          <div className="text-center text-pink-300 animate-pulse font-medium">
+            Membuka album kenangan...
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {images.map((img) => (
+              <div 
+                key={img.id} 
+                className="group relative overflow-hidden rounded-3xl border border-white/20 bg-white/5 backdrop-blur-md transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-pink-500/20"
+              >
+                {/* Gambar kenangan */}
+                <img 
+                  src={img.url} 
+                  alt="Kenangan" 
+                  className="w-full h-64 md:h-80 object-cover" 
+                />
+                
+                {/* Keterangan foto semi-transparan */}
+                <div className="p-4 text-center bg-black/40 backdrop-blur-sm">
+                  <span className="text-white/90 text-xs md:text-sm font-light tracking-wide">
+                    📍 {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Jika gallery masih kosong */}
+        {!loading && images.length === 0 && (
+          <div className="text-center mt-20 text-white/50">
+            <p className="text-xl">Belum ada foto nih. Yuk upload foto pertama kalian!</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

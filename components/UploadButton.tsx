@@ -25,25 +25,24 @@ export default function UploadButton({ onSuccess }: { onSuccess: () => void }) {
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: '40px', right: '40px', zIndex: 100 }}>
+    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px' }}>
       <label style={{
-        backgroundColor: "#ff4d6d",
+        backgroundColor: "#ff4d4d",
         color: "white",
-        width: "60px",
-        height: "60px",
-        borderRadius: "50%",
+        padding: "14px 28px",
+        borderRadius: "50px",
+        cursor: "pointer",
+        fontWeight: "600",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer",
-        boxShadow: "0 10px 25px rgba(255, 77, 109, 0.4)",
-        fontSize: "24px",
-        transition: "transform 0.2s"
+        gap: "10px",
+        transition: "all 0.3s ease",
+        boxShadow: "0 10px 20px rgba(255, 77, 77, 0.2)",
       }}
-      onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-      onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+      onMouseOver={(e) => e.currentTarget.style.transform = "translateY(-3px)"}
+      onMouseOut={(e) => e.currentTarget.style.transform = "translateY(0)"}
       >
-        {uploading ? "⏳" : "＋"}
+        <span>{uploading ? "⌛ Menyimpan..." : "✨ Tambah Kenangan Baru"}</span>
         <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} style={{ display: "none" }} />
       </label>
     </div>
