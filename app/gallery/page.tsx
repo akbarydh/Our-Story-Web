@@ -32,11 +32,17 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen px-4 py-10">
       <div className="max-w-6xl mx-auto">
+        {/* HEADER REVISI */}
         <header className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-pink-200 drop-shadow-[0_0_10px_rgba(244,143,177,0.5)] mb-4">Album Kita ❤️</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-pink-200 drop-shadow-[0_0_10px_rgba(244,143,177,0.5)] mb-4 italic">
+            Album Kita ❤️
+          </h1>
+          <p className="text-white/40 text-[10px] tracking-[0.3em] uppercase font-light">
+            Menyimpan setiap detik yang takkan terulang
+          </p>
         </header>
 
-        {/* Tombol Pemicu Modal */}
+        {/* TOMBOL (Tetap Desain Awal) */}
         <div className="flex justify-center mb-10">
           <button 
             onClick={() => setIsModalOpen(true)}
@@ -46,7 +52,7 @@ export default function GalleryPage() {
           </button>
         </div>
 
-        {/* Modal yang tadi kita buat */}
+        {/* Modal Kenangan */}
         <UploadModal 
           isOpen={isModalOpen} 
           onClose={() => setIsModalOpen(false)} 
@@ -54,7 +60,9 @@ export default function GalleryPage() {
         />
 
         {loading ? (
-          <div className="text-center text-pink-300 animate-pulse font-light tracking-widest">Membuka album kenangan...</div>
+          <div className="text-center text-pink-300 animate-pulse font-light tracking-widest">
+            Membuka album kenangan...
+          </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {images.map((img) => {
@@ -73,7 +81,9 @@ export default function GalleryPage() {
                       <img src={img.url} className="w-full h-64 md:h-80 object-cover" alt="Kenangan" />
                     )}
                     <div className="p-4 text-center bg-black/40 border-t border-white/5">
-                      <span className="text-white/70 text-[10px] tracking-widest uppercase font-medium group-hover:text-pink-200">📍 Lihat Detail</span>
+                      <span className="text-white/70 text-[10px] tracking-widest uppercase font-medium group-hover:text-pink-200">
+                        📍 Lihat Detail
+                      </span>
                     </div>
                   </div>
                 </Link>
