@@ -28,23 +28,44 @@ export default function LettersPage() {
     if (!title || !content || !sender) return alert("Lengkapi semua field dulu ya!");
     setIsSending(true);
     try {
+      // 1. Simpan ke Database Supabase
       const { error } = await supabase.from("letters").insert([{ title, content, sender }]);
       if (error) throw error;
 
-      const botToken = "8461531414:AAHX47m28pYuJ0pDfy5eqf_VT58i8_C9jmc";
-      const chatId = "5648114343"; 
-      const message = `💌 *Ada Surat Baru Masuk!* 💌\n\nJudul: "${title}"\nDari: *${sender}*\n\nCek web sekarang ya! ✨`;
+      // 2. Data Bot Telegram
+      const botToken = "8215830664:AAG3sK4pbb168Rm4lkcdpM4UM_UIuO8fe-o";
+      const chatIds = ["1304535878", "5648114343"]; 
+      
+      // Menggunakan format HTML (lebih stabil daripada Markdown)
+      const message = `<b>💌 Ada Surat Baru Masuk! 💌</b>\n\n` +
+                      `Judul: "<i>${title}</i>"\n` +
+                      `Dari: <b>${sender}</b>\n\n` +
+                      `✨ <a href="https://our-story-web-phi.vercel.app/letters">Klik di sini untuk baca suratnya!</a>`;
 
-      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" }),
-      }).catch(err => console.error("Telegram Notif Error:", err));
+      // 3. Kirim Notifikasi ke Semua ID
+      await Promise.all(chatIds.map(async (id) => {
+        try {
+          const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              chat_id: id, 
+              text: message, 
+              parse_mode: "HTML" 
+            }),
+          });
+          const result = await res.json();
+          if (!result.ok) console.error(`Error ID ${id}:`, result.description);
+        } catch (err) {
+          console.error(`Fetch error ID ${id}:`, err);
+        }
+      }));
 
+      // Reset Form
       setTitle(""); setContent(""); setSender("");
       setIsWriteModalOpen(false);
       fetchLetters();
-      alert("Surat berhasil dikirim & Notifikasi meluncur! 🚀💌");
+      alert("Surat berhasil dikirim ke database & Notifikasi meluncur! 🚀💌");
     } catch (error: any) {
       alert("Gagal mengirim: " + error.message);
     } finally { setIsSending(false); }
