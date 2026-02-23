@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import FloatingMusic from "@/components/FloatingMusic";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,24 +26,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}>
-        {/* Navbar Global */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans bg-[#0a0a0a]`}>
+        {/* 1. Navbar Global */}
         <Navbar />
         
-        {/* 1. Background Foto Global & Overlay */}
+        {/* 2. Background Foto Global & Overlay */}
         <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden">
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10s]"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
             style={{ backgroundImage: "url('/images/bakcgrounddd.jpeg')" }} 
           />
-          {/* Overlay gelap agar teks putih tetap terbaca jelas */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+          {/* Overlay gelap agar teks tetap terbaca */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
         </div>
 
-        {/* 2. Container Konten Utama */}
+        {/* 3. Container Konten Utama */}
         <main className="relative pt-20 min-h-screen">
           {children}
         </main>
+
+        {/* 4. Musik Melayang (Akan muncul di semua halaman) */}
+        <FloatingMusic />
       </body>
     </html>
   );
