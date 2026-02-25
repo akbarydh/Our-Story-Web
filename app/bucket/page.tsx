@@ -5,7 +5,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient"; // Pastikan path ini benar
 
 export default function BucketListPage() {
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<any[]>([]);
   const [newItem, setNewItem] = useState("");
   const [loading, setLoading] = useState(true);
 
