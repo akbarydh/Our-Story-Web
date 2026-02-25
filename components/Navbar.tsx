@@ -10,7 +10,7 @@ export default function Navbar() {
     { name: "Timeline", href: "/timeline" },
     { name: "Gallery", href: "/gallery" },
     { name: "Letters", href: "/letters" },
-    { name: "Bucket List", href: "/bucket-list" }
+    { name: "Wish List", href: "/bucket" }
   ];
 
   return (
