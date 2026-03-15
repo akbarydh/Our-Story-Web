@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import UploadModal from "@/components/UploadModal"; // Import Modal Baru
+import UploadModal from "@/components/UploadModal"; 
 import Link from "next/link";
 
 export default function GalleryPage() {
   const [images, setImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State buat buka/tutup modal
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   useEffect(() => { fetchImages(); }, []);
 
@@ -32,7 +32,7 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen px-4 py-10">
       <div className="max-w-6xl mx-auto">
-        {/* HEADER REVISI */}
+        {/* HEADER  */}
         <header className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-pink-200 drop-shadow-[0_0_10px_rgba(244,143,177,0.5)] mb-4 italic">
             Album Kita ❤️
@@ -42,7 +42,7 @@ export default function GalleryPage() {
           </p>
         </header>
 
-        {/* TOMBOL (Tetap Desain Awal) */}
+        {/* TOMBOL */}
         <div className="flex justify-center mb-10">
           <button 
             onClick={() => setIsModalOpen(true)}

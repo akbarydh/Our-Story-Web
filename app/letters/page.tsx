@@ -11,12 +11,12 @@ export default function LettersPage() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [sender, setSender] = useState(""); // Default kosong agar user harus memilih
+  const [sender, setSender] = useState(""); 
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Daftar Nama Opsi (Ganti dengan nama kalian)
+  
   const SENDER_OPTIONS = ["Akbar", "Naila"];
 
   useEffect(() => { fetchLetters(); }, []);

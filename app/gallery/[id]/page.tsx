@@ -10,7 +10,7 @@ export default function DetailPage() {
   const [meta, setMeta] = useState({ description: "", event_date: "" });
   const [loading, setLoading] = useState(true);
   
-  // State untuk Edit Mode
+ 
   const [isEditing, setIsEditing] = useState(false);
   const [editDesc, setEditDesc] = useState("");
   const [editDate, setEditDate] = useState("");
@@ -62,9 +62,7 @@ export default function DetailPage() {
     if (!confirm("Yakin mau hapus kenangan ini? 🥺 Gak bisa balik lagi lho...")) return;
     
     try {
-      // 1. Hapus Metadata
       await supabase.from("gallery_metadata").delete().eq("file_id", id);
-      // 2. Hapus File di Storage
       await supabase.storage.from("gallery").remove([id as string]);
       
       router.push("/gallery");
@@ -95,7 +93,7 @@ export default function DetailPage() {
         <div className="mt-8 text-center px-6 w-full max-w-md">
           <AnimatePresence mode="wait">
             {isEditing ? (
-              // FORM EDIT (Muncul pas tombol edit diklik)
+              // FORM EDIT 
               <motion.div 
                 key="edit-mode"
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
@@ -126,7 +124,6 @@ export default function DetailPage() {
                 </div>
               </motion.div>
             ) : (
-              // TAMPILAN NORMAL
               <motion.div 
                 key="view-mode"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}

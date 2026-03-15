@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient"; // Pastikan path ini benar
+import { supabase } from "@/lib/supabaseClient"; 
 
 export default function BucketListPage() {
   const [list, setList] = useState<any[]>([]);
   const [newItem, setNewItem] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 1. Ambil Data dari Supabase
+  // Ambil Data dari Supabase
   const fetchBucketList = async () => {
     const { data, error } = await supabase
       .from("bucket_list")
@@ -22,7 +22,7 @@ export default function BucketListPage() {
 
   useEffect(() => { fetchBucketList(); }, []);
 
-  // 2. Tambah Data Baru
+  // Tambah Data Baru
   const addItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItem.trim()) return;
@@ -38,7 +38,7 @@ export default function BucketListPage() {
     }
   };
 
-  // 3. Update Status (Checkbox)
+  // Update Status (Checkbox)
   const toggleComplete = async (id: number, currentStatus: boolean) => {
     const { error } = await supabase
       .from("bucket_list")
@@ -50,7 +50,7 @@ export default function BucketListPage() {
     }
   };
 
-  // 4. Hapus Data
+  // Hapus Data
   const deleteItem = async (id: number) => {
     const { error } = await supabase.from("bucket_list").delete().eq("id", id);
     if (!error) setList(list.filter(item => item.id !== id));
